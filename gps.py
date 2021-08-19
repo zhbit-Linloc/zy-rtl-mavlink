@@ -49,23 +49,21 @@ class GPS:
             for gps_item in gps_list:
                 gps_info = gps_item.split(',')
                 if len(gps_info) >= 12:
-                    if gps_info[0] == '$GNRMC':
-                        self.gpsStatus = gps_info[2]
-                        if self.get_status():
-                            # print(gps_info)
-                            self.latitude = round(self.GPSTransforming(gps_info[3]), 6)
-                            self.longitude = round(self.GPSTransforming(gps_info[5]), 6)
-                            self.speedkm = round(float(gps_info[7]) * 1.852, 2)
+                    #if gps_info[0] == '$GNRMC':
+                    #    self.gpsStatus = gps_info[2]
+                    #    if self.get_status():
+                    #        # print(gps_info)
+                    #        self.latitude = round(self.GPSTransforming(gps_info[3]), 6)
+                    #        self.longitude = round(self.GPSTransforming(gps_info[5]), 6)
+                    #        self.speedkm = round(float(gps_info[7]) * 1.852, 2)
 
 
-                            self.on_update_rmc()
-                        else:
-                            self.on_error('定位无效\n%s' % gps_item)
-                    if gps_info[0] == '$GPRMC':
-                        print(gps_info)
+                    #        self.on_update_rmc()
+                    #    else:
+                    #        self.on_error('定位无效\n%s' % gps_item)
+                    #if gps_info[0] == '$GPRMC':
+                    #    print(gps_info)
                     if gps_info[0] == '$GNGGA':
-
-                        print(gps_info)
                         if gps_info[6] == '1':
                             self.latitude = round(self.GPSTransforming(gps_info[2]), 6)
                             self.longitude = round(self.GPSTransforming(gps_info[4]), 6)
@@ -73,9 +71,10 @@ class GPS:
                             self.altitude_msl = float(gps_info[9])
 
                             self.on_update_gga()
-
-                    if gps_info[0] == '$GPGGA':
-                        print(gps_info)
+                        else:
+                            self.on_error('定位无效\n%s' % gps_item)
+                    #if gps_info[0] == '$GPGGA':
+                    #    print(gps_info)
 
     def GPSTransforming(self, _Value):
         Ret = 0.0
