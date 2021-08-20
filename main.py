@@ -51,11 +51,6 @@ def main():
         task.start()
     except KeyboardInterrupt:
         task.stop()
-    # p1 = multiprocessing.Process(target = gps_worker, args = (gps,))
-    # p3 = multiprocessing.Process(target = write_worker, args = (gcs, copter, gps, master))
-    #
-    # p1.start()
-    # p3.start()
 
 
 if __name__ == '__main__':
