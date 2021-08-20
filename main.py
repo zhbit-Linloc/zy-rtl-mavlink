@@ -2,20 +2,27 @@ from gps import GPS
 from mavlink import mavLink
 from gcs import GCS
 import argparse
-import serial
-import threading
-class myThread(threading.Thread):
-    def __init__(self, threadID, gps):
-        threading.Thread.__init__(self)
-        self.threadID = threadID
-        self.gps = gps
-        
-    def run(self):
-        while True:
-            self.gps.loop()
-            #a_data = self.a.read_data()
-            #print('{}'.format(a_data))
-            #self.b.write_data()
+from processTask import processTask
+
+
+def gps_worker(gps):
+    while True:
+        gps.loop()
+
+
+def write_worker(gcs, copter, gps, master):
+    i = 100
+    while True:
+        gcs_data = gcs.read_data()
+        copter_data = copter.read_data()
+        gcs.write_data(copter_data)
+        copter.write_data(gcs_data)
+        if i == 0:
+            print('Set home position: | latitude:{} | longitude:{} | altitude:{}'.
+                  format(gps.latitude, gps.longitude, gps.altitude))
+            master.set_home_position(gps.latitude, gps.longitude, gps.altitude)
+            i = 100
+        i -= 1
 
 
 def get_args():
