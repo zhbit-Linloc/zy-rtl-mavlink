@@ -10,7 +10,6 @@ class GPS:
     longitude = 0
     altitude = 0
     altitude_msl = 0
-    speedkm = 0
     gpsStatus = None
 
 
@@ -21,7 +20,10 @@ class GPS:
         if self.gpsStatus == 'A':
             return True
         return False
-
+    
+    def get_data(self):
+        return self.latitude, self.longitude, self.altitude
+    
     def on_update_rmc(self):
         print("latitude: {}, longitude: {} | Speed (Km) is {}".format(self.latitude, self.longitude, self.speedkm))
 
@@ -30,7 +32,7 @@ class GPS:
 
 
     def on_error(self, msg):
-        print("ERROR： {}".format(msg))
+        print("Error: {}".format(msg))
 
     def loop(self):
         if self.serial.in_waiting > 0:
@@ -65,14 +67,19 @@ class GPS:
                     #    print(gps_info)
                     if gps_info[0] == '$GNGGA':
                         if gps_info[6] == '1':
-                            self.latitude = round(self.GPSTransforming(gps_info[2]), 6)
-                            self.longitude = round(self.GPSTransforming(gps_info[4]), 6)
+                            self.latitude = round(self.GPSTransforming(gps_info[2]), 7)
+                            self.longitude = round(self.GPSTransforming(gps_info[4]), 7)
                             self.altitude = round(float(gps_info[9]) + float(gps_info[11]), 1)
                             self.altitude_msl = float(gps_info[9])
-
-                            self.on_update_gga()
+                            #self.on_update_gga()
+                            return True
                         else:
-                            self.on_error('定位无效\n%s' % gps_item)
+                            self.latitude = -1
+                            self.longitude = -1
+                            self.altitude = -1
+                            self.on_error('Invalid Location!!! Error message is: %s' % gps_item)
+                            return False
+
                     #if gps_info[0] == '$GPGGA':
                     #    print(gps_info)
 
