@@ -13,9 +13,16 @@ class GCS:
     def write_data(self, data):
         self.serial.write(data)
 
-if __name__ == '__main__':
-    ser = serial.Serial(port='com4',baudrate=115200)
+def main():
+    gcs = GCS(port='/dev/ttyUSB0',baudrate=115200)
+    copter = GCS(port='/dev/ttyS0',baudrate=115200)
     while 1:
-        data = ser.readline()
-        print(data)
-        ser.write(data)
+        gcs_data = gcs.read_data()
+        copter_data = copter.read_data()
+        print('gcs: {}'.format(gcs_data))
+        print('copter: {}'.format(copter_data))
+        gcs.write_data(copter_data)
+        copter.write_data(gcs_data)
+
+if __name__ == '__main__':
+    main()
