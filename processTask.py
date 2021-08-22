@@ -1,7 +1,6 @@
 import multiprocessing
 
 class processTask:
-    gcs = None
     def gps_worker(self):
         while True:
             status = self.gps.loop()
