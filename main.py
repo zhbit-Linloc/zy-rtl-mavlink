@@ -4,27 +4,6 @@ from gcs import GCS
 import argparse
 from processTask import processTask
 
-
-def gps_worker(gps):
-    while True:
-        gps.loop()
-
-
-def write_worker(gcs, copter, gps, master):
-    i = 100
-    while True:
-        gcs_data = gcs.read_data()
-        copter_data = copter.read_data()
-        gcs.write_data(copter_data)
-        copter.write_data(gcs_data)
-        if i == 0:
-            print('Set home position: | latitude:{} | longitude:{} | altitude:{}'.
-                  format(gps.latitude, gps.longitude, gps.altitude))
-            master.set_home_position(gps.latitude, gps.longitude, gps.altitude)
-            i = 100
-        i -= 1
-
-
 def get_args():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--copter', '-c', default='/dev/ttyUSB0',
