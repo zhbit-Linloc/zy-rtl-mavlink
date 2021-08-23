@@ -1,11 +1,24 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   main.py
+@Contact :   1045853428@qq.com
+
+@Modify Time      @Author    @Version    @Desciption
+------------      -------    --------    -----------
+2021/8/23 9:50   chenzishen     1.0         主函数
+
+@Function:   None
+'''
+
 from gps import GPS
 from mavlink import mavLink
 from gcs import GCS
 import argparse
 from processTask import processTask
 
+
 def get_args():
-    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser = argparse.ArgumentParser(formatter_class = argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--copter', '-c', default='/dev/ttyUSB0',
                         type=str,
                         help="设置无人机的端口号")

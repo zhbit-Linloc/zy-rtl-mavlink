@@ -1,3 +1,15 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   gps.py
+@Contact :   1045853428@qq.com
+
+@Modify Time      @Author    @Version    @Desciption
+------------      -------    --------    -----------
+2021/8/23 9:50   chenzishen     1.0       获取GPS信息
+
+@Function:   None
+'''
+
 import time
 import serial
 
